@@ -2,8 +2,21 @@ import zipfile as zf
 import xml.etree.ElementTree as et
 import math
 
-def main():
-    wires = getFromFritzing('./Fritzing/','testSketch')
+
+# def main():
+#     print getWireData('./uploads/','Electrical_Diagram')
+
+def getWireData(filepath, filename):
+    """
+    Gets the wire data from the specified file and parses it 
+    into a format to send to the arduino. See helper functions for details.
+
+    filepath: folder the file is in
+    filename: name of file, without extension
+
+    returns: list of (color, length) tuples of the wires.
+    """
+    wires = getFromFritzing(filepath, filename)
     colors={'#418dd9':'b',  #blue
         '#cc1414':'r',      #red
         '#404040':'k',      #black
@@ -15,7 +28,7 @@ def main():
         '#8c3b00':'n',      #brown
         '#ab58a2':'p',      #purple
         '#000000':'k'}      #schematic black
-    print doTheMath(wires,colors)
+    return doTheMath(wires,colors)
 
 
 def getFromFritzing(filepath, filename):
@@ -41,7 +54,7 @@ def getFromFritzing(filepath, filename):
     """
     res=[]
     archive = zf.ZipFile(filepath+filename+'.fzz')
-    sketch = archive.open(filename+'.fz')
+    sketch = archive.open(filename.replace('_',' ')+'.fz')
     tree = et.parse(sketch)
     root = tree.getroot()
     for wire in root.findall(".//instance[@moduleIdRef='WireModuleID']/views/breadboardView"):
@@ -62,9 +75,10 @@ def doTheMath(wireGeometries,colors):
     for x,y,color in wireGeometries:
         length=math.sqrt(float(x)**2+float(y)**2)
         res.append((colors[color],length))
+    res.sort()
     return res
 
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

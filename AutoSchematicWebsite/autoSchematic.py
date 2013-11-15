@@ -32,12 +32,15 @@ app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 
-@app.route('/cut/<filename>', methods=['Get','POST'])
+@app.route('/cut/<filename>', methods=['GET','POST'])
 def cut(filename):
     # serial setup
-    # ser=serial.Serial('/dev/ttyACM0') #connect to serial port
+    print "hello"
+    ser=serial.Serial('/dev/ttyACM0') #connect to serial port
+    waitForCompletion(ser)
     wireData=getWireData(UPLOAD_FOLDER, filename)
-    print wireData
+    sendWires(ser, wireData)
+    # print wireData
     return render_template('wires.jade', title='Wires', wireData=wireData)
 @app.route('/')
 def homepage():

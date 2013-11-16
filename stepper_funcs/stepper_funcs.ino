@@ -58,6 +58,9 @@ void loop() {
 }
 
 int process_data(int data) {
+  //200 step stepper, wheel has radius ~2cm
+  //distance-to-step function: data*200/(4pi)
+  //do this calculation in Python! 
   int random_factor = 1;
   return data * random_factor;
 }

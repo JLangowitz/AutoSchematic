@@ -31,11 +31,11 @@ void setup() {
 
 void loop() {
   Serial.println("Single coil steps");
-  myMotor->step(100, FORWARD, SINGLE); 
   myMotor->step(100, BACKWARD, SINGLE); 
+  myMotor->step(100, FORWARD, SINGLE); 
 
   Serial.println("Double coil steps");
-  myMotor->step(100, FORWARD, DOUBLE); 
-  myMotor->step(100, BACKWARD, DOUBLE);
+  myMotor->step(100, BACKWARD, DOUBLE); 
+  myMotor->step(100, FORWARD, DOUBLE);
   
 }

@@ -74,7 +74,13 @@ def doTheMath(wireGeometries,colors):
     res = []
     for x,y,color in wireGeometries:
         length=math.sqrt(float(x)**2+float(y)**2)
-        res.append((colors[color],length))
+        # map to number of steps on our stepper
+        length*=.449
+        length=int(round(length))
+        if length>255:
+            print "error, wire too long"
+        else:
+            res.append((colors[color],length))
     res.sort()
     return res
 

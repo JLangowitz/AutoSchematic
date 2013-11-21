@@ -36,10 +36,13 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 def cut(filename):
     # serial setup
     print "hello"
-    ser=serial.Serial('/dev/ttyACM0') #connect to serial port
-    waitForCompletion(ser)
-    wireData=getWireData(UPLOAD_FOLDER, filename)
-    sendWires(ser, wireData)
+    try:
+        ser=serial.Serial('/dev/ttyACM0') #connect to serial port
+        waitForCompletion(ser)
+        wireData=getWireData(UPLOAD_FOLDER, filename)
+        sendWires(ser, wireData)
+    except:
+        wireData=getWireData(UPLOAD_FOLDER, filename)
     # print wireData
     return render_template('wires.jade', title='Wires', wireData=wireData)
 @app.route('/')

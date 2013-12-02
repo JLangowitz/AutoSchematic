@@ -6,3 +6,13 @@ body {
 a {
   color: #00B7FF;
 }
+
+.form-control-inline {
+    width: 100%
+}
+
+#upload {
+    border-radius: 3px;
+    background-color: #222222;
+    color: #999999;
+}

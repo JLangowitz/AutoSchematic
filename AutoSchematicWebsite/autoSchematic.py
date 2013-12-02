@@ -52,14 +52,6 @@ def cut(filename):
 def homepage():
     return render_template('index.jade', title='AutoSchematic')
 
-@app.route('/team')
-def teampage():
-    return render_template('team.jade', title='Team')
-
-@app.route('/details')
-def details():
-    return render_template('details.jade', title='Details')
-
 @app.route('/upload', methods=['GET','POST'])
 def uploads():
     if request.method == 'POST':
@@ -69,10 +61,6 @@ def uploads():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return redirect('/cut/'+file.filename.replace(' ','_').replace('.fzz',''), code=307)
     return render_template('upload.jade', title='Upload')
-
-@app.route('/wires')
-def wires():
-    return
 
 if __name__ == '__main__':
     app.run()

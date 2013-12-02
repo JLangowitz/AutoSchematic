@@ -9,6 +9,8 @@ Servo stripper;  // create servo object to control a servo
                 // a maximum of eight servo objects can be created
 Servo cutter;
 
+Servo bender;
+
 int pos = 0;    // variable to store the servo position
 int i = 0;
 
@@ -29,49 +31,26 @@ void setup() {
   cutter.attach(10);
   cutter.write(109);  //open position
   
+  //bender servo
+  bender.attach(11);
+  bender.write(10); //open position
+  
   Serial.begin(9600);
   
   AFMS.begin();  // create with the default frequency 1.6KHz
-  feeder->setSpeed(1);  // 5 rpm   
+  feeder->setSpeed(1);  // 1 rpm   
 
 }
-
-//void loop() {
-//
-//  Serial.println("Double coil steps");
-//  myMotor->step(40, BACKWARD, DOUBLE); 
-////  myMotor->step(200, FORWARD, DOUBLE); 
-//  
-//  
-//  delay(4000);
-//  
-//  for(i=0; i<3; i++){
-//                                        //closes stripper
-//  for(pos = 180; pos>=120; pos-=1)     // goes from 180 degrees to 0 degrees
-//  {                                
-//    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-//    delay(15);                       // waits 15ms for the servo to reach the position
-//  }
-//  delay(1000);
-//  for(pos = 120; pos < 180; pos += 1)  // goes from 0 degrees to 180 degrees
-//  {                                  // in steps of 1 degree
-//    myservo.write(pos);              // tell servo to go to position in variable 'pos'
-//    delay(15);                       // waits 15ms for the servo to reach the position
-//  }
-//  delay(500);
-//  }
-//
-//  delay(2000);                      //opens stripper
-//  myMotor->step(2, FORWARD, DOUBLE);
-//  delay(2000);
-//  i=0;
-//  
-//}
 
 void loop() {
   //first feed/strip-cut
   feed(15);
   strip(1);
+  delay(500);
+  
+  //bend at the strip-cut
+  feed(15);
+  bend();
   delay(500);
   
   //dislodge wire from stripper
@@ -122,6 +101,9 @@ void cut() {
 }
 
 void bend() {
+  bender.write(90);  //closed position
+  delay(500);
   
-  
+  bender.write(10);  //open position
+  delay(500);
 }

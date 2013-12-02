@@ -6,7 +6,7 @@ Website
 """
 # imports
 from flask import Flask, request, session, g, redirect, url_for, \
-     abort, render_template, flash
+     abort, render_template, flash, redirect
 import os
 from werkzeug import secure_filename
 from getWireData import *
@@ -35,16 +35,19 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 @app.route('/cut/<filename>', methods=['GET','POST'])
 def cut(filename):
     # serial setup
-    print "hello"
-    try:
-        ser=serial.Serial('/dev/ttyACM0') #connect to serial port
-        waitForCompletion(ser)
-        wireData=getWireData(UPLOAD_FOLDER, filename)
-        sendWires(ser, wireData)
-    except:
-        wireData=getWireData(UPLOAD_FOLDER, filename)
+    if request.method == 'POST':
+        print "hello"
+        try:
+            ser=serial.Serial('/dev/ttyACM0') #connect to serial port
+            waitForCompletion(ser)
+            wireData=getWireData(UPLOAD_FOLDER, filename)
+            sendWires(ser, wireData)
+        except:
+            wireData=getWireData(UPLOAD_FOLDER, filename)
+        return redirect('/cut/'+filename)
+    return render_template('cut.jade', filename=filename, title='Cut in Progress')
+        
     # print wireData
-    return render_template('wires.jade', title='Wires', wireData=wireData)
 @app.route('/')
 def homepage():
     return render_template('index.jade', title='AutoSchematic')
@@ -64,6 +67,7 @@ def uploads():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return redirect('/cut/'+file.filename.replace(' ','_').replace('.fzz',''), code=307)
     return render_template('upload.jade', title='Upload')
 
 @app.route('/wires')

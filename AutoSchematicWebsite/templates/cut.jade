@@ -3,5 +3,12 @@ extends layout
 block scripts
 
 block content
-    h1 #{title}
-    div Your wires for #{filename} are being cut!
+    h1(class='text-center') #{title}
+    div(class='well text-center') 
+        if err
+            |#{err}
+        else
+            |Your wires for #{filename} are being cut!
+        div(class='text-center') Here is a cute kitten while you wait:
+        div
+            image(src=url, class='img-rounded', id='kitten')

@@ -12,6 +12,7 @@ from werkzeug import secure_filename
 from getWireData import *
 from talkToArduino import *
 import serial
+import random
 
 # config
 DEBUG = True
@@ -32,20 +33,24 @@ app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 
-@app.route('/cut/<filename>', methods=['GET','POST'])
+@app.route('/cut/<filename>', methods=['POST'])
 def cut(filename):
     # serial setup
     if request.method == 'POST':
-        print "hello"
         try:
             ser=serial.Serial('/dev/ttyACM0') #connect to serial port
             waitForCompletion(ser)
             wireData=getWireData(UPLOAD_FOLDER, filename)
             sendWires(ser, wireData)
+            title='Cut in Progress'
         except:
-            wireData=getWireData(UPLOAD_FOLDER, filename)
-        return redirect('/cut/'+filename)
-    return render_template('cut.jade', filename=filename, title='Cut in Progress')
+            print 'Cannot connect to arduino'
+            err = 'There has been an error communicating with our device.\
+            Please try again later.'
+            title='Sorry!'
+        return render_template('cut.jade', filename=filename, title=title, \
+                url= 'http://placekitten.com/%s/%s' %(str(random.randint(200,600)),str(random.randint(200,600))), \
+                err=err)
         
     # print wireData
 @app.route('/')
@@ -60,7 +65,7 @@ def uploads():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return redirect('/cut/'+file.filename.replace(' ','_').replace('.fzz',''), code=307)
-    return render_template('upload.jade', title='Upload')
+    return render_template('upload.jade', title='Upload', url=url_for('static', filename='AutoSchematicLogo'))
 
 if __name__ == '__main__':
     app.run()

@@ -11,8 +11,24 @@ a {
     width: 100%
 }
 
-#upload {
-    border-radius: 3px;
-    background-color: #222222;
-    color: #999999;
+.well {
+    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 18px;
+    border-radius: 10px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+nav {
+    font-size: 16px;
+}
+
+img {
+    margin-top: 20px;
+}
+
+#logo {
+  width: 600px;
 }

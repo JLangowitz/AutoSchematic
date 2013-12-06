@@ -1,6 +1,5 @@
 body {
-  padding: 40px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 18px 'Raleway', "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -16,7 +15,6 @@ a {
 }
 
 .well {
-    width: 50%;
     margin-right: auto;
     margin-left: auto;
     font-size: 18px;
@@ -47,3 +45,18 @@ img {
 .navbar-fixed-top {
   border: 0px
 }
+
+.body {
+    width: 60%;
+    margin: auto;
+    margin-top: 5%;
+    min-width: 360px;
+    /*padding: 0;*/
+}
+
+@media only screen and (max-width: 959px) {
+    .body {
+        width: 95%;
+        margin-top: 7%;
+    }
+  }

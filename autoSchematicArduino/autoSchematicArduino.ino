@@ -58,7 +58,7 @@ void getCommand(){
       if (Serial.available()>=length) {
         //char data[length-2];
         //Serial.readBytes(data, length);
-        data=Serial.read()
+        char data=Serial.read();
         executeCommand(command, data);
         serialState=0;
         cutWire(data);

@@ -59,12 +59,19 @@ def homepage():
 
 @app.route('/upload', methods=['GET','POST'])
 def uploads():
+    # print request.json['files']
     if request.method == 'POST':
+        print 'upload'
+        print request
+        print request.__dict__
+        print request.form
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return redirect('/cut/'+file.filename.replace(' ','_').replace('.fzz',''), code=307)
+        else:
+            return render_template('upload.jade',title='Upload', url=url_for('static', filename='AutoSchematicLogo'), err='Please upload a .fzz file')
+        return redirect('/cut/'+filename.replace(' ','_').replace('.fzz',''), code=307)
     return render_template('upload.jade', title='Upload', url=url_for('static', filename='AutoSchematicLogo'))
 
 if __name__ == '__main__':

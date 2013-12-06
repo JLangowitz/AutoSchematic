@@ -11,6 +11,10 @@ a {
     width: 100%
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 .well {
     width: 50%;
     margin-right: auto;
@@ -31,4 +35,15 @@ img {
 
 #logo {
   width: 600px;
+}
+
+.nav-logo {
+  height: 0px;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.navbar-fixed-top {
+  border: 0px
 }

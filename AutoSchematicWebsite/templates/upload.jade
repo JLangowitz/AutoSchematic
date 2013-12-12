@@ -3,13 +3,12 @@ extends layout
 block scripts
 
 block content
-    h1(class='text-center') #{title}
     div(class='well text-center')
         form(class='form-inline', action='/upload', method='POST', id='uploadForm', enctype='multipart/form-data')
             div(class='form-group')
                 label(for='upload', class='sr-only') Upload your Schematic
                 input(type='file', class='from-control form-control-inline', name='file', id='upload')
-            button(type='submit', class='btn btn-primary') Upload
+            button(type='submit', class='btn btn-primary') Cut
             if (err)
                 span(class='help-block text-danger') #{err}
         image(src=url+'.png', class='img-rounded',id='logo')

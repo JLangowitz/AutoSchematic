@@ -7,9 +7,18 @@
  
 Servo stripper;  // create servo object to control a servo
                 // a maximum of eight servo objects can be created
+int s_closed = 0;
+int s_open = 0;
+
 Servo cutter;
 
+int c_closed = 0;
+int c_open = 0;
+
 Servo bender;
+
+int b_closed = 10;
+int b_open = 85;
 
 int pos = 0;    // variable to store the servo position
 //int i = 0;
@@ -43,37 +52,47 @@ void setup() {
 }
 
 void loop() {
-  //first feed/strip-cut
-  feed(15);
-  strip(1);
-  delay(500);
+  cut_wire(5);
   
-  //bend at the strip-cut
-  bend();
+  delay(1000);
+  
+  cut_wire(10);
+  
+  delay(1000);
+  
+}
+
+void cut_wire(int steps) {
+  //first strip-cut
+  //feed(15);
+  strip(1);
   delay(500);
   
   //dislodge wire from stripper
-  feeder->setSpeed(10);  // 10 rpm   
-  feeder->step(5, FORWARD, DOUBLE);
-  delay(1000);
-  feeder->step(5, BACKWARD, DOUBLE);
-  delay(500);
-  feeder->setSpeed(3);  // 3 rpm   
+  dislodge();
   
+  //bend at the strip-cut
+  feed(40);
+  bend();
+  delay(500);
+
   //feed out length of wire, then strip-cut
-  feed(20);
+  feed(steps);
   strip(1);
   delay(500);
   
+  //dislodge wire from stripper
+  dislodge();
+  
   //bend at the strip cut
-  feed(15);
+  feed(40);
   bend();
   delay(500);
   
   //final feed/cut
-  feed(20);
   cut();
   delay(1000);
+  
   
 }
 
@@ -102,7 +121,7 @@ void strip(int times) {
 
 
 void cut() {
-  cutter.write(110);    //closed position
+  cutter.write(120);    //closed position
   delay(1000);
   
   cutter.write(55);    //open position
@@ -111,9 +130,19 @@ void cut() {
 }
 
 void bend() {
-  bender.write(90);  //closed position
-  delay(500);
+  bender.write(85);  //closed position
+  delay(1000);
   
   bender.write(10);  //open position
   delay(500);
+}
+
+void dislodge() {
+  //dislodge wire from stripper
+  feeder->setSpeed(10);  // 10 rpm   
+  feeder->step(5, FORWARD, DOUBLE);
+  delay(1000);
+  feeder->step(5, BACKWARD, DOUBLE);
+  delay(500);
+  feeder->setSpeed(3);  // 3 rpm  
 }

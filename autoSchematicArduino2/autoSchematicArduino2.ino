@@ -34,7 +34,7 @@ void setup() {
   
   //cutter servo
   cutter.attach(10);
-  cutter.write(109);  //open position
+  cutter.write(55);  //open position
   
   //bender servo
   bender.attach(11);
@@ -101,38 +101,49 @@ void executeCommand(char command, int data){
 }
 
 void cutWire(int data){
-  //do some wire logic
-  //first feed/strip-cut
-  feed(15);
-  strip(1);
-  delay(500);
+  cut_wire(5);
   
-  //bend at the strip-cut
-  bend();
+  delay(1000);
+  
+  cut_wire(10);
+  
+  delay(1000);
+  
+  Serial.println(data);
+}
+
+void cut_wire(int steps) {
+  //first strip-cut
+  //feed(15);
+  strip(1);
   delay(500);
   
   //dislodge wire from stripper
-  feeder->step(5, FORWARD, DOUBLE);
-  delay(1000);
-  feeder->step(5, BACKWARD, DOUBLE);
-  delay(500);
+  dislodge();
   
+  //bend at the strip-cut
+  feed(40);
+  bend();
+  delay(500);
+
   //feed out length of wire, then strip-cut
-  feed(data);
+  feed(steps);
   strip(1);
   delay(500);
   
+  //dislodge wire from stripper
+  dislodge();
+  
   //bend at the strip cut
-  feed(15);
+  feed(40);
   bend();
   delay(500);
   
   //final feed/cut
-  feed(20);
   cut();
-  
-  Serial.println(data);
+  delay(1000);
 }
+
 
 void feed(int steps) {
   feeder->step(steps, BACKWARD, DOUBLE);
@@ -140,7 +151,7 @@ void feed(int steps) {
 }
 
 void strip(int times) {
-  //int i;
+  int i;
   for(i=0; i<times; i++) {
     for(pos = 180; pos >=120; pos-=1) { //closes stripper
       stripper.write(pos);
@@ -154,23 +165,33 @@ void strip(int times) {
     delay(500);
   }
   delay(2000);
-  i=0;
+  //i=0;
 }
 
 
 void cut() {
-  cutter.write(180);    //closed position
+  cutter.write(120);    //closed position
   delay(1000);
   
-  cutter.write(109);    //open position
+  cutter.write(55);    //open position
   delay(500);
   
 }
 
 void bend() {
-  bender.write(90);  //closed position
-  delay(500);
+  bender.write(85);  //closed position
+  delay(1000);
   
   bender.write(10);  //open position
   delay(500);
+}
+
+void dislodge() {
+  //dislodge wire from stripper
+  feeder->setSpeed(10);  // 10 rpm   
+  feeder->step(5, FORWARD, DOUBLE);
+  delay(1000);
+  feeder->step(5, BACKWARD, DOUBLE);
+  delay(500);
+  feeder->setSpeed(3);  // 3 rpm  
 }

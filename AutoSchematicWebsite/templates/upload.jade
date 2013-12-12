@@ -1,13 +1,14 @@
 extends layout
 
 block scripts
-
+    script(src=url_for('static', filename='filestyle.js'))
+    script(src=url_for('static', filename='upload.js'))
 block content
     div(class='well text-center')
         form(class='form-inline', action='/upload', method='POST', id='uploadForm', enctype='multipart/form-data')
-            div(class='form-group')
-                label(for='upload', class='sr-only') Upload your Schematic
-                input(type='file', class='from-control form-control-inline', name='file', id='upload')
+            div(class='form-group', id='fileInput', title='Choose File:')
+                //- label(for='upload', class='sr-only') Upload your Schematic
+                input(type='file', class='filestyle from-control form-control-inline', name='file', id='upload')
             button(type='submit', class='btn btn-primary') Cut
             if (err)
                 span(class='help-block text-danger') #{err}

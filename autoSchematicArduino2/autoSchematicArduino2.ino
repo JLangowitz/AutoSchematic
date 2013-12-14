@@ -112,6 +112,31 @@ void cutWire(int data){
   Serial.println(data);
 }
 
+void cut_wo_bend(int steps) {
+  //first strip-cut
+  //feed(15);
+  strip(1);
+  delay(500);
+  
+  //dislodge wire from stripper
+  dislodge();
+  delay(500);
+
+  //feed out length of wire, then strip-cut
+  feed(steps);
+  strip(1);
+  delay(500);
+  
+  //dislodge wire from stripper
+  dislodge();
+  delay(500);
+  
+  //final feed/cut
+  cut();
+  delay(1000);
+  
+}
+
 void cut_wire(int steps) {
   //first strip-cut
   //feed(15);

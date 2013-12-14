@@ -21,7 +21,7 @@ void setup() {
 }
 
 void loop() {
-    bender.write(85);
+    bender.write(95);
 }
 
 

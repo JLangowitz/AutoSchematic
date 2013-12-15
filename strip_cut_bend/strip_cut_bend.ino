@@ -55,11 +55,11 @@ void setup() {
 }
 
 void loop() {
-  cut_wire(5);
+  cut_wire(20);
   
   delay(1000);
   
-  cut_wire(10);
+  cut_wire(50);
   
   delay(1000);
   
@@ -68,89 +68,91 @@ void loop() {
 void cut_wire(int steps) {
   if(steps < 40) {
     //first strip-cut
-    //dislodge
+    strip(1);
+    dislodge();
+    
     //feed steps
+    feed(steps);
     
     //second strip-cut
-    //dislodge
+    strip(1);
+    dislodge();
+    
     //feed 40 - steps
+    feed(40-steps);
     
     //first bend
+    bend();
+    
     //feed steps
+    feed(steps);
+    
     //second bend
+    bend();
+    
+    //cut
+    cut();
+    dispense(3);
+    
   }
   else {
-    //feed to strip-cut
+    //first strip-cut
+    strip(1);
+    dislodge();
+    
+    //feed to first strip-cut, bend
+    feed(40);
+    bend();
+    
+    //feed steps-40
+    feed(steps-40);
+    
     //strip-cut
+    strip(1);
+    dislodge();
+    
+    //feed to strip-cut, bend
+    feed(40);
+    bend();
+    
+    //cut
+    cut();
+    dispense(3);
+    
     
   }
   
   
-  //first strip-cut
-  //feed(15);
-  strip(1);
-  delay(500);
+//  //first strip-cut
+//  strip(1);
+//  
+//  //dislodge wire from stripper
+//  dislodge();
+//  
+//  //bend at the strip-cut
+//  feed(50);
+//  bend();
+//
+//  //feed out length of wire, then strip-cut
+//  //feed(steps - 40);
+//  feed(steps);
+//  strip(1);
+//  
+//  //dislodge wire from stripperx
+//  dislodge();
+//  
+//  //bend at the strip cut
+//  feed(50);
+//  bend();
+//  
+//  //final feed/cut
+//  cut();
+//  delay(500);
+//  
+//  //drop wire into tray by raising the bending table
+//  dispense(3);
+//  delay(1000);
   
-  //dislodge wire from stripper
-  dislodge();
-  
-
-  //bend at the strip-cut
-  feed(50);
-  bend();
-  delay(500);
-
-  //feed out length of wire, then strip-cut
-  //feed(steps - 40);
-  feed(steps);
-  strip(1);
-  delay(500);
-  
-  //dislodge wire from stripper
-  dislodge();
-  
-  //bend at the strip cut
-  feed(50);
-  bend();
-  delay(500);
-  
-  //final feed/cut
-  cut();
-  delay(500);
-  
-  //drop wire into tray by raising the bending table
-  dispense(3);
-  delay(1000);
-  
-  
-}
-
-void cut_wo_bend(int steps) {
-  //first strip-cut
-  //feed(15);
-  strip(1);
-  delay(500);
-  
-  //dislodge wire from stripper
-  dislodge();
-  delay(500);
-
-  //feed out length of wire, then strip-cut
-  feed(steps);
-  strip(1);
-  delay(500);
-  
-  //dislodge wire from stripper
-  dislodge();
-  delay(500);
-  
-  //final feed/cut
-  cut();
-  delay(1000);
-  
-  //drop wire into tray by raising the bending table
-  dispense(3);
-  delay(1000);
   
 }
 
@@ -174,7 +176,7 @@ void strip(int times) {
     }
     delay(500);
   }
-  delay(2000);
+  delay(2500);
   //i=0;
 }
 
@@ -183,7 +185,7 @@ void cut() {
   delay(1000);
   
   cutter.write(c_open);    //open position
-  delay(500);
+  delay(1500);
 }
 
 void bend() {
@@ -191,7 +193,7 @@ void bend() {
   delay(1000);
   
   bender.write(b_open);  //open position
-  delay(500);
+  delay(1000);
 }
 
 void dislodge() {
@@ -215,9 +217,10 @@ void dispense(int times) {
   //jiggles the bender a certain number of times
   int i;
   for(i=0; i < times; i++) {
-    bender.write(b_closed);
-    delay(50);
+    bender.write(b_closed-20);
+    delay(100);
     bender.write(b_open);
+    delay(500);
   }
   
 }

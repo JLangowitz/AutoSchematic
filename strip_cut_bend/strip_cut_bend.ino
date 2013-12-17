@@ -117,43 +117,8 @@ void cut_wire(int steps) {
     
     //cut
     cut();
-    dispense(3);
-    
-    
+    dispense(3); 
   }
-  
-  
-//  //first strip-cut
-//  strip(1);
-//  
-//  //dislodge wire from stripper
-//  dislodge();
-//  
-//  //bend at the strip-cut
-//  feed(50);
-//  bend();
-//
-//  //feed out length of wire, then strip-cut
-//  //feed(steps - 40);
-//  feed(steps);
-//  strip(1);
-//  
-//  //dislodge wire from stripperx
-//  dislodge();
-//  
-//  //bend at the strip cut
-//  feed(50);
-//  bend();
-//  
-//  //final feed/cut
-//  cut();
-//  delay(500);
-//  
-//  //drop wire into tray by raising the bending table
-//  dispense(3);
-//  delay(1000);
-  
-  
 }
 
 void feed(int steps) {

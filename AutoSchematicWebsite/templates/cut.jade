@@ -6,7 +6,7 @@ block scripts
 block content
     h1(class='text-center') #{title}
     div(class='hidden',id='file') #{filename}
-    div(class='well text-center') 
+    div(class='well text-center',err=err,id='err') 
         if err
             |#{err}
         else

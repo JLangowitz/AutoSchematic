@@ -50,12 +50,12 @@ def cut(filename):
         Please try again later.'
         title='Sorry!'
     if request.method == 'GET':
-        ser.close()
+        # ser.close()
         print 'get'
         return render_template('cut.jade', filename=filename, title=title, \
                 url= 'http://placekitten.com/%s/%s' %(str(random.randint(200,600)),str(random.randint(200,600))), \
                 err= err)
-    return render_template('index.jade', title='AutoSchematic')
+    return render_template('done.jade', title='Done', url='http://placekitten.com/%s/%s' %(str(random.randint(200,600)),str(random.randint(200,600))))
         
 @app.route('/')
 def homepage():

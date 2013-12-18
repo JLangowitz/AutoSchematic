@@ -36,14 +36,17 @@ int pos = 0;    // variable to store the servo position
 
 void setup() {
   //stripper servo
+
   stripper.attach(strip_pin); 
   stripper.write(s_open);
   
   //cutter servo
+
   cutter.attach(cut_pin);
   cutter.write(c_open);
   
   //bender servo
+
   bender.attach(bend_pin);
   bender.write(b_open);
   
@@ -83,11 +86,13 @@ void feed(int steps) {
 }
 
 void cut() {
+
   cutter.write(c_closed);
   delay(1000);
   
   cutter.write(c_open);    //open position
   delay(1500);
+
 }
 
 

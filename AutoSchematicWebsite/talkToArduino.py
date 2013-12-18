@@ -31,7 +31,7 @@ def makeWire(ser, color, wireLength, commandLength=1):
     wireLength: int- length of wire
     commandLength: int- length of command, should always be 6
     """
-    print commandLength
+    # print commandLength
     print 'W%c%c' %(commandLength, int(wireLength))
     print ser.write('W%c%c' %(commandLength, int(wireLength)))
     print '____________________'
@@ -45,11 +45,12 @@ def waitForCompletion(ser):
     """
     # while ser.inWaiting()==0:
     #     pass
-    for byte in ser.readline():
-        print byte
+    print ser.readline()
+    # for byte in ser.readline():
+    #     print byte
     # ser.flushInput()
     
-if __name__ == '__main__':
-    import serial
-    ser=serial.Serial('/dev/ttyACM0') #connect to serial port
-    sendWires(ser, [('r',100)])
+# if __name__ == '__main__':
+    # import serial
+    # ser=serial.Serial('/dev/ttyACM0') #connect to serial port
+    # sendWires(ser, [('r',100)])

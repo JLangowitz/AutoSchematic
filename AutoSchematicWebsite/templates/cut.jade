@@ -1,9 +1,11 @@
 extends layout
 
 block scripts
+    script(src=url_for('static', filename='cut.js'))
 
 block content
     h1(class='text-center') #{title}
+    div(class='hidden',id='file') #{filename}
     div(class='well text-center') 
         if err
             |#{err}

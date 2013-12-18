@@ -6,6 +6,10 @@ a {
   color: #00B7FF;
 }
 
+.hidden {
+  /*visibility: hidden;*/
+}
+
 .form-control-inline {
     width: 100%
 }
@@ -19,14 +23,13 @@ a {
 }
 
 .file-input-name {
-  display: inline-block;
+  color: #333333
 }
 
 .well {
     margin-right: auto;
     margin-left: auto;
     font-size: 18px;
-    border-radius: 10px;
     padding-top: 25px;
     padding-bottom: 25px;
 }

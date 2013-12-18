@@ -33,26 +33,30 @@ app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 
-@app.route('/cut/<filename>', methods=['POST'])
+@app.route('/cut/<filename>', methods=['GET','POST'])
 def cut(filename):
     # serial setup
-    if request.method == 'POST':
-        try:
-            ser=serial.Serial('/dev/ttyACM0') #connect to serial port
+    try:
+        ser=serial.Serial('/dev/ttyACM0') #connect to serial port
+        if request.method == 'POST':
             waitForCompletion(ser)
             wireData=getWireData(UPLOAD_FOLDER, filename)
             sendWires(ser, wireData)
-            title='Cut in Progress'
-        except:
-            print 'Cannot connect to arduino'
-            err = 'There has been an error communicating with our device.\
-            Please try again later.'
-            title='Sorry!'
+        title='Cut in Progress'
+        err=''
+    except:
+        print 'Cannot connect to arduino'
+        err = 'There has been an error communicating with our device.\
+        Please try again later.'
+        title='Sorry!'
+    if request.method == 'GET':
+        ser.close()
+        print 'get'
         return render_template('cut.jade', filename=filename, title=title, \
                 url= 'http://placekitten.com/%s/%s' %(str(random.randint(200,600)),str(random.randint(200,600))), \
-                err=err)
+                err= err)
+    return render_template('index.jade', title='AutoSchematic')
         
-    # print wireData
 @app.route('/')
 def homepage():
     return render_template('index.jade', title='AutoSchematic')
@@ -61,17 +65,17 @@ def homepage():
 def uploads():
     # print request.json['files']
     if request.method == 'POST':
-        print 'upload'
-        print request
-        print request.__dict__
-        print request.form
+        # print 'upload'
+        # print request
+        # print request.__dict__
+        # print request.form
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         else:
             return render_template('upload.jade',title='Upload', url=url_for('static', filename='AutoSchematicLogo'), err='Please upload a .fzz file')
-        return redirect('/cut/'+filename.replace(' ','_').replace('.fzz',''), code=307)
+        return redirect('/cut/'+filename.replace(' ','_').replace('.fzz',''))
     return render_template('upload.jade', title='Upload', url=url_for('static', filename='AutoSchematicLogo'))
 
 if __name__ == '__main__':

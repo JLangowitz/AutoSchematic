@@ -1,5 +1,7 @@
 body {
     font: 18px 'Raleway', "Lucida Grande", Helvetica, Arial, sans-serif;
+    /*background: url(url_for('static',filename='background.png'))*/
+    background: url('./background.png')
 }
 
 a {

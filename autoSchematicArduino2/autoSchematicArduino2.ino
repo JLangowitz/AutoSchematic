@@ -9,18 +9,21 @@ Servo stripper;  // create servo object to control a servo
 int strip_pin = 9;
 int s_closed = 120;
 int s_open = 175;
+int s_LED = 2;
 
 Servo cutter;
 
 int cut_pin = 10;
 int c_closed = 120;
 int c_open = 55;
+int c_LED = 3;
 
 Servo bender;
 
 int bend_pin = 11;
 int b_closed = 95;
 int b_open = 10;
+int b_LED = 4;
 
 int pos = 0;    // variable to store the servo position
 
@@ -41,14 +44,17 @@ void setup() {
   Serial.begin(9600);
   Serial.flush();
 
+  pinMode(s_LED, OUTPUT);
   stripper.attach(strip_pin); 
   stripper.write(s_open);
   
   //cutter servo
+  pinMode(c_LED, OUTPUT);
   cutter.attach(cut_pin);
   cutter.write(c_open);
   
   //bender servo
+  pinMode(b_LED, OUTPUT);
   bender.attach(bend_pin);
   bender.write(b_open);
   
@@ -181,6 +187,7 @@ void feed(int steps) {
 }
 
 void strip(int times) {
+  digitalWrite(s_LED, HIGH);
   int i;
   for(i=0; i<times; i++) {
     for(pos = s_open; pos >= s_closed; pos-=1) { //closes stripper
@@ -195,23 +202,28 @@ void strip(int times) {
     delay(500);
   }
   delay(2500);
+  digitalWrite(s_LED, LOW);
   //i=0;
 }
 
 void cut() {
+  digitalWrite(c_LED, HIGH);
   cutter.write(c_closed);
   delay(1000);
   
   cutter.write(c_open);    //open position
   delay(1500);
+  digitalWrite(c_LED, LOW);
 }
 
 void bend() {
+  digitalWrite(b_LED, HIGH);
   bender.write(b_closed);  //closed position
   delay(1000);
   
   bender.write(b_open);  //open position
   delay(1000);
+  digitalWrite(b_LED, LOW);
 }
 
 void dislodge() {

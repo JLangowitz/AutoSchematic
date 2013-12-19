@@ -4,6 +4,8 @@
 #include "utility/Adafruit_PWMServoDriver.h"
 #include <Servo.h>
 
+int bend_dist = 50;
+
 Servo stripper;  // create servo object to control a servo
                 // a maximum of eight servo objects can be created
 int strip_pin = 9;
@@ -125,7 +127,7 @@ void cutWire(int data){
 }
 
 void cut_wire(int steps) {
-  if(steps < 40) {
+  if(steps < bend_dist) {
     //first strip-cut
     strip(1);
     dislodge();
@@ -138,7 +140,7 @@ void cut_wire(int steps) {
     dislodge();
     
     //feed 40 - steps
-    feed(40-steps);
+    feed(bend_dist-steps);
     
     //first bend
     bend();
@@ -160,18 +162,18 @@ void cut_wire(int steps) {
     dislodge();
     
     //feed to first strip-cut, bend
-    feed(40);
+    feed(bend_dist);
     bend();
     
     //feed steps-40
-    feed(steps-40);
+    feed(steps-bend_dist);
     
     //strip-cut
     strip(1);
     dislodge();
     
     //feed to strip-cut, bend
-    feed(40);
+    feed(bend_dist);
     bend();
     
     //cut
@@ -238,7 +240,7 @@ void dislodge() {
 }
 
 void dispense(int times) {
-  bender.write(b_closed);  //closed position
+  bender.write(b_closed-20);  //closed position
   delay(2000);
   
   bender.write(b_open);  //open position
@@ -247,10 +249,10 @@ void dispense(int times) {
   //jiggles the bender a certain number of times
   int i;
   for(i=0; i < times; i++) {
-    bender.write(b_closed-20);
+    bender.write(b_closed-30);
     delay(100);
     bender.write(b_open);
-    delay(500);
+    delay(1000);
   }
   
 }
